@@ -1,45 +1,28 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import * as React from "react";
+import TreeView from "@mui/lab/TreeView";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import TreeItem from "@mui/lab/TreeItem";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React</p>
-        <p>
-          <button onClick={() => setCount((count) => count + 1)}>
-            count {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {" | "}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <TreeView
+      aria-label="file system navigator"
+      defaultCollapseIcon={<ExpandMoreIcon />}
+      defaultExpandIcon={<ChevronRightIcon />}
+      sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: "auto" }}
+    >
+      <TreeItem nodeId="1" label="Applications">
+        <TreeItem nodeId="2" label="Calendar" />
+      </TreeItem>
+      <TreeItem nodeId="5" label="Documents">
+        <TreeItem nodeId="10" label="OSS" />
+        <TreeItem nodeId="6" label="MUI">
+          <TreeItem nodeId="8" label="index.js" />
+        </TreeItem>
+      </TreeItem>
+    </TreeView>
   );
 }
 
-export default App;
