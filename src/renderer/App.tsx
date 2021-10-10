@@ -1,11 +1,17 @@
 import "./App.css";
 import * as React from "react";
+import { useEffect, useState } from "react";
 import TreeView from "@mui/lab/TreeView";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import TreeItem from "@mui/lab/TreeItem";
+import { getPathAllFilesData, IFlieData } from "./util/getPath";
 
 export default function App() {
+  const [data, setData] = useState<IFlieData[] | []>([]);
+  getPathAllFilesData("C:/Users/Zz/Desktop/monkey-editor").then((tempData) => {
+    setData(tempData ? tempData : []);
+  });
   return (
     <TreeView
       aria-label="file system navigator"
@@ -13,16 +19,30 @@ export default function App() {
       defaultExpandIcon={<ChevronRightIcon />}
       sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: "auto" }}
     >
-      <TreeItem nodeId="1" label="Applications">
-        <TreeItem nodeId="2" label="Calendar" />
-      </TreeItem>
-      <TreeItem nodeId="5" label="Documents">
-        <TreeItem nodeId="10" label="OSS" />
-        <TreeItem nodeId="6" label="MUI">
-          <TreeItem nodeId="8" label="index.js" />
-        </TreeItem>
-      </TreeItem>
+      <Tree fileData={data} />
     </TreeView>
   );
 }
 
+interface TreeProps {
+  fileData: IFlieData[];
+}
+function Tree({ fileData }: TreeProps) {
+  return (
+    <>
+      {fileData.map((item, index) => {
+        if (item.subFiles.length > 0) {
+          return (
+            <TreeItem nodeId={item.idx} key={item.idx} label={item.fileName}>
+              <Tree fileData={item.subFiles} />
+            </TreeItem>
+          );
+        } else {
+          return (
+            <TreeItem nodeId={item.idx} key={item.idx} label={item.fileName} />
+          );
+        }
+      })}
+    </>
+  );
+}
